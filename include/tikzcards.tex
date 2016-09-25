@@ -71,7 +71,6 @@
 
 %   Rahmen der Karte
 \newcommand{\cardborder}{
-    % \draw[lightgray,cardcorners] \shapeCard;
     \draw[lightgray] (0, \baserectheight) -- (0, 0) -- (\cardwidth, 0) -- (\cardwidth, \baserectheight) arc(0:180:\cardradius) --cycle;
 }
 
@@ -79,39 +78,6 @@
 \newcommand{\cardbackground}[1]{
     \draw[draw=none, cardcorners, cardimage=#1] \shapeCard;
 }
-
-%   Kategorie der Karte
-% The two bands that go along the left hand side,
-% the uppermost of which has a symbol in it while
-% the other has a county name in it
-\newcommand{\cardtype}[3]{
-    % %   First we fill the intersecting area
-    % %   The \clip command does not allow options, therefore 
-    % %   we have to use a scope to set the even odd rule.
-    % \begin{scope}[even odd rule]
-    %     %   Define a clipping path. All paths outside shapeCard will
-    %     %   be cut because the even odd rule is set.
-    %     \clip[cardcorners] \shapeCard;
-    %     % Fill shapeLeftStripLong and shapeLeftStripShort.
-    %     %   Since the even odd rule is set, only the card will be filled.
-    %     \fill[strip,#1] \shapeLeftStripLong node[rotate=90,above left=0.9mm,font=\normalsize] {
-    %         \color{white}\uppercase{#2}
-    %     };
-    %     \fill[strip,#1] \shapeLeftStripShort;
-    % \end{scope}
-
-    % \node at (\strippadding+\stripwidth-0.28,\cardheight-\strippadding-\strippadding-0.37) {\color{white}#3};
-}
-\newcommand{\cardtypeCharacter}{\cardtype{characterbg}{Charaktereigenschaft}{\hspace{-1mm}\LARGE\lefthand}}
-\newcommand{\cardtypeAbility}{\cardtype{abilitybg}{Fähigkeit}{\hspace{-1mm}\Large\floweroneright}}
-\newcommand{\cardtypeItem}{\cardtype{itembg}{Gegenstand}{\hspace{-1mm}\LARGE\bomb}}
-\newcommand{\cardtypeTest}{\cardtype{testbg}{Testkarte}{\hspace{-1.4mm}\huge\ding{78}}}
-\newcommand{\cardtypeNorfolk}{\cardtype{norfolkbg}{Norfolk}{\hspace{-1mm}\Large\floweroneright}}
-\newcommand{\cardtypeHertfordshire}{\cardtype{hertfordshirebg}{Hertfordshire}{\hspace{-1.4mm}\huge\ding{78}}}
-\newcommand{\cardtypeCambridgeshire}{\cardtype{cambridgeshirebg}{Cambridgeshire}{\hspace{-1mm}\LARGE\ding{45}}}
-\newcommand{\cardtypeEssex}{\cardtype{essexbg}{Essex}{\hspace{-1mm}\LARGE\lefthand}}
-\newcommand{\cardtypeSuffolk}{\cardtype{suffolkbg}{Suffolk}{\hspace{-1mm}\LARGE\ding{48}}}
-
 
 %   Titel der Karte
 \newcommand{\cardtitle}[1]{
@@ -122,32 +88,4 @@
             \color{white}\uppercase{\normalsize #1}
         \end{center}
     };
-}
-
-%   Inhalt der Karte
-% All the text that would go in the white box at the bottom
-% of the card
-\newcommand{\cardcontent}[2]{
-    % \begin{scope}[even odd rule]
-    %     \clip[cardcorners] \shapeCard;
-    %     \fill[elementcorners,contentbg] \shapeContentArea;
-    % \end{scope}
-    % \node[below right, text width=(\cardwidth-2*\strippadding-\stripwidth-2*\textpadding-0.3)*1cm] at (2*\strippadding+\stripwidth+\textpadding,0.5*\cardheight-\textpadding) {
-    %     \textit{\normalsize #1}
-    % };
-    % \node[below right, text width=(\cardwidth-2*\strippadding-\stripwidth-2*\textpadding-0.3)*1cm] at (2*\strippadding+\stripwidth+\textpadding,3) {
-    %     \vrule width \textwidth height 2pt \\[-2pt]
-    %     \vspace{0.2cm}
-    %     {\scriptsize #2}
-    % };
-}
-
-%   Preis der Karte
-% Thing in the top right hand corner with a number in it
-\newcommand{\cardprice}[1]{
-    % \begin{scope}[even odd rule]
-    %     \clip[cardcorners] \shapeCard;
-    %     \fill[strip,pricebg] \shapeRightStripShort;
-    % \end{scope}
-    % \node at (\cardwidth-0.5*\stripwidth-\strippadding,\titley-0.1) {\color{white}\textbf{#1}};
 }
