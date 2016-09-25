@@ -71,12 +71,13 @@
 
 %   Rahmen der Karte
 \newcommand{\cardborder}{
-    \draw[lightgray,cardcorners] \shapeCard;
+    % \draw[lightgray,cardcorners] \shapeCard;
+    \draw[lightgray] (0, \baserectheight) -- (0, 0) -- (\cardwidth, 0) -- (\cardwidth, \baserectheight) arc(0:180:\cardradius) --cycle;
 }
 
 %   Hintergrund der Karte
 \newcommand{\cardbackground}[1]{
-    \draw[cardcorners, cardimage=#1] \shapeCard;
+    \draw[draw=none, cardcorners, cardimage=#1] \shapeCard;
 }
 
 %   Kategorie der Karte
