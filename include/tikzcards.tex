@@ -2,31 +2,41 @@
 %   ---------------------------------------
 
 %   TikZ/PGF Settings für die Karten
-\pgfmathsetmacro{\cardwidth}{6}
-\pgfmathsetmacro{\cardheight}{9}
+\pgfmathsetmacro{\cardwidth}{2.2225}
+\pgfmathsetmacro{\cardradius}{\cardwidth/2}
+\pgfmathsetmacro{\cardheight}{3.4925}
+\pgfmathsetmacro{\baserectheight}{\cardheight-\cardradius}
+
+%\pgfmathsetmacro{\cardwidth}{4}
+%\pgfmathsetmacro{\cardheight}{8}
 \pgfmathsetmacro{\imagewidth}{\cardwidth}
 \pgfmathsetmacro{\imageheight}{0.75*\cardheight}
 \pgfmathsetmacro{\stripwidth}{0.7}
-\pgfmathsetmacro{\strippadding}{0.2}
+\pgfmathsetmacro{\strippadding}{0.05}
 \pgfmathsetmacro{\textpadding}{0.1}
-\pgfmathsetmacro{\titley}{\cardheight-\strippadding-1.5*\textpadding-0.5*\stripwidth}
+\pgfmathsetmacro{\titley}{\strippadding+\textpadding+0.5*\stripwidth}
 
 
 %   Formen der einzelnen Kartenelemente/-bestandteile
-\def\shapeCard{(0,0) rectangle (\cardwidth,\cardheight)}
+%\def\shapeCard{(0,0) rectangle (\cardwidth,\baserectheight) (\cardradius,\baserectheight) circle (\cardradius)} 
+
+\def\shapeCard{(0,0) rectangle (\cardwidth,\baserectheight) (0,\baserectheight) -- (\cardwidth, \baserectheight) arc(0:180:\cardradius) --cycle} 
+
 \def\shapeLeftStripLong{(\strippadding,-0.2) rectangle (\strippadding+\stripwidth,\cardheight-\strippadding-\strippadding-1)}
+
 \def\shapeLeftStripShort{(\strippadding,\cardheight-\strippadding-1) rectangle (\strippadding+\stripwidth,\cardheight+0.2)}
+
 \def\shapeRightStripShort{(\cardwidth-\stripwidth-\strippadding,\cardheight-\strippadding-1) rectangle (\cardwidth-\strippadding,\cardheight+0.2)}
-\def\shapeTitleArea{(2*\strippadding+\stripwidth,\cardheight-\strippadding) rectangle (\cardwidth-2*\strippadding-\stripwidth,\cardheight-2*\stripwidth)}
+
+\def\shapeTitleArea{(\strippadding,\strippadding) rectangle (\cardwidth-\strippadding,\stripwidth)}
+
 \def\shapeContentArea{(2*\strippadding+\stripwidth,0.5*\cardheight) rectangle (\cardwidth+0.2,-0.2)}
 
 
 %   Stylings für die Elemente definieren
 \tikzset{
     %   runde Ecken für die Karten
-    cardcorners/.style={
-        rounded corners=0.2cm
-    },
+    cardcorners/.style={},
     %   runde Ecken für die "Fähnchen"
     elementcorners/.style={
         rounded corners=0.1cm
@@ -70,23 +80,26 @@
 }
 
 %   Kategorie der Karte
+% The two bands that go along the left hand side,
+% the uppermost of which has a symbol in it while
+% the other has a county name in it
 \newcommand{\cardtype}[3]{
-    %   First we fill the intersecting area
-    %   The \clip command does not allow options, therefore 
-    %   we have to use a scope to set the even odd rule.
-    \begin{scope}[even odd rule]
-        %   Define a clipping path. All paths outside shapeCard will
-        %   be cut because the even odd rule is set.
-        \clip[cardcorners] \shapeCard;
-        % Fill shapeLeftStripLong and shapeLeftStripShort.
-        %   Since the even odd rule is set, only the card will be filled.
-        \fill[strip,#1] \shapeLeftStripLong node[rotate=90,above left=0.9mm,font=\normalsize] {
-            \color{white}\uppercase{#2}
-        };
-        \fill[strip,#1] \shapeLeftStripShort;
-    \end{scope}
+    % %   First we fill the intersecting area
+    % %   The \clip command does not allow options, therefore 
+    % %   we have to use a scope to set the even odd rule.
+    % \begin{scope}[even odd rule]
+    %     %   Define a clipping path. All paths outside shapeCard will
+    %     %   be cut because the even odd rule is set.
+    %     \clip[cardcorners] \shapeCard;
+    %     % Fill shapeLeftStripLong and shapeLeftStripShort.
+    %     %   Since the even odd rule is set, only the card will be filled.
+    %     \fill[strip,#1] \shapeLeftStripLong node[rotate=90,above left=0.9mm,font=\normalsize] {
+    %         \color{white}\uppercase{#2}
+    %     };
+    %     \fill[strip,#1] \shapeLeftStripShort;
+    % \end{scope}
 
-    \node at (\strippadding+\stripwidth-0.28,\cardheight-\strippadding-\strippadding-0.37) {\color{white}#3};
+    % \node at (\strippadding+\stripwidth-0.28,\cardheight-\strippadding-\strippadding-0.37) {\color{white}#3};
 }
 \newcommand{\cardtypeCharacter}{\cardtype{characterbg}{Charaktereigenschaft}{\hspace{-1mm}\LARGE\lefthand}}
 \newcommand{\cardtypeAbility}{\cardtype{abilitybg}{Fähigkeit}{\hspace{-1mm}\Large\floweroneright}}
@@ -111,26 +124,29 @@
 }
 
 %   Inhalt der Karte
+% All the text that would go in the white box at the bottom
+% of the card
 \newcommand{\cardcontent}[2]{
-    \begin{scope}[even odd rule]
-        \clip[cardcorners] \shapeCard;
-        \fill[elementcorners,contentbg] \shapeContentArea;
-    \end{scope}
-    \node[below right, text width=(\cardwidth-2*\strippadding-\stripwidth-2*\textpadding-0.3)*1cm] at (2*\strippadding+\stripwidth+\textpadding,0.5*\cardheight-\textpadding) {
-        \textit{\normalsize #1}
-    };
-    \node[below right, text width=(\cardwidth-2*\strippadding-\stripwidth-2*\textpadding-0.3)*1cm] at (2*\strippadding+\stripwidth+\textpadding,3) {
-        \vrule width \textwidth height 2pt \\[-2pt]
-        \vspace{0.2cm}
-        {\scriptsize #2}
-    };
+    % \begin{scope}[even odd rule]
+    %     \clip[cardcorners] \shapeCard;
+    %     \fill[elementcorners,contentbg] \shapeContentArea;
+    % \end{scope}
+    % \node[below right, text width=(\cardwidth-2*\strippadding-\stripwidth-2*\textpadding-0.3)*1cm] at (2*\strippadding+\stripwidth+\textpadding,0.5*\cardheight-\textpadding) {
+    %     \textit{\normalsize #1}
+    % };
+    % \node[below right, text width=(\cardwidth-2*\strippadding-\stripwidth-2*\textpadding-0.3)*1cm] at (2*\strippadding+\stripwidth+\textpadding,3) {
+    %     \vrule width \textwidth height 2pt \\[-2pt]
+    %     \vspace{0.2cm}
+    %     {\scriptsize #2}
+    % };
 }
 
 %   Preis der Karte
+% Thing in the top right hand corner with a number in it
 \newcommand{\cardprice}[1]{
-    \begin{scope}[even odd rule]
-        \clip[cardcorners] \shapeCard;
-        \fill[strip,pricebg] \shapeRightStripShort;
-    \end{scope}
-    \node at (\cardwidth-0.5*\stripwidth-\strippadding,\titley-0.1) {\color{white}\textbf{#1}};
+    % \begin{scope}[even odd rule]
+    %     \clip[cardcorners] \shapeCard;
+    %     \fill[strip,pricebg] \shapeRightStripShort;
+    % \end{scope}
+    % \node at (\cardwidth-0.5*\stripwidth-\strippadding,\titley-0.1) {\color{white}\textbf{#1}};
 }
