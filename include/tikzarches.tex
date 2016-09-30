@@ -1,8 +1,13 @@
-\pgfmathsetmacro{\cardwidth}{3.0}
-\pgfmathsetmacro{\cardheight}{4.1}
+%   COMMANDS ZUM ZUSAMMENBAUEN DER KARTEN
+%   ---------------------------------------
 
+%   TikZ/PGF Settings für die Karten
+\pgfmathsetmacro{\cardwidth}{2.41}
+\pgfmathsetmacro{\cardradius}{\cardwidth/2}
+\pgfmathsetmacro{\cardheight}{3.5925}
+\pgfmathsetmacro{\baserectheight}{\cardheight-\cardradius}
 
-\pgfmathsetmacro{\imagewidth}{\cardwidh}
+\pgfmathsetmacro{\imagewidth}{\cardwidth}
 \pgfmathsetmacro{\imageheight}{0.75*\cardheight}
 \pgfmathsetmacro{\stripwidth}{0.7}
 \pgfmathsetmacro{\strippadding}{0.05}
@@ -11,8 +16,9 @@
 
 
 %   Formen der einzelnen Kartenelemente/-bestandteile
+%\def\shapeCard{(0,0) rectangle (\cardwidth,\baserectheight) (\cardradius,\baserectheight) circle (\cardradius)} 
 
-\def\shapeCard{(0,0) rectangle (\cardwidth,\cardheight)} 
+\def\shapeCard{(0,0) rectangle (\cardwidth,\baserectheight) (0,\baserectheight) -- (\cardwidth, \baserectheight) arc(0:180:\cardradius) --cycle} 
 
 \def\shapeLeftStripLong{(\strippadding,-0.2) rectangle (\strippadding+\stripwidth,\cardheight-\strippadding-\strippadding-1)}
 
@@ -63,7 +69,7 @@
 
 %   Rahmen der Karte
 \newcommand{\cardborder}{
-    \draw[lightgray] (0,0) rectangle (\cardwidth,\cardheight);
+    \draw[lightgray] (0, \baserectheight) -- (0, 0) -- (\cardwidth, 0) -- (\cardwidth, \baserectheight) arc(0:180:\cardradius) --cycle;
 }
 
 %   Hintergrund der Karte
