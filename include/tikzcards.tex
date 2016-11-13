@@ -9,6 +9,9 @@
 \pgfmathsetmacro{\textpadding}{0.1}
 \pgfmathsetmacro{\titley}{\strippadding+\textpadding+0.5*\stripwidth}
 
+\usepackage{relsize}
+\tikzset{fontscale/.style = {font=\relsize{#1}}}
+
 
 %   Formen der einzelnen Kartenelemente/-bestandteile
 
@@ -20,7 +23,7 @@
 
 \def\shapeRightStripShort{(\cardwidth-\stripwidth-\strippadding,\cardheight-\strippadding-1) rectangle (\cardwidth-\strippadding,\cardheight+0.2)}
 
-\def\shapeTitleArea{(\strippadding,\strippadding) rectangle (\cardwidth-\strippadding,\stripwidth)}
+\def\shapeTitleArea{(3*\strippadding,\strippadding) rectangle (\cardwidth-3*\strippadding,1.25*\stripwidth)}
 
 \def\shapeContentArea{(2*\strippadding+\stripwidth,0.5*\cardheight) rectangle (\cardwidth+0.2,-0.2)}
 
@@ -75,9 +78,9 @@
 \newcommand{\cardtitle}[1]{
     %\draw[pattern=soft crosshatch,rounded corners=0.1cm] \shapeTitleArea;
     \fill[elementcorners,titlebg,opacity=.85] \shapeTitleArea;
-    \node[text width=3.75cm] at (0.5*\cardwidth,\titley) {
+    \node[text width=3.75cm] at (0.5*\cardwidth,\titley) [fontscale=-2.5] {
         \begin{center}
-            \color{white}\uppercase{\normalsize #1}
+            \color{white}\uppercase{#1}
         \end{center}
     };
 }
